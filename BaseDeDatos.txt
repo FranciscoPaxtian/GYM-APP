@@ -1,0 +1,83 @@
+create table Socios(
+	ID_Socio varchar,
+	Nombre varchar,
+	Apellido varchar,
+	Genero varchar,
+	Edad varchar,
+	Telefono varchar,
+	Email varchar,
+	primary key (ID_Socio)
+);
+
+create table Pago(
+	ID_Pago varchar,
+	ID_Socio varchar,
+	Monto varchar,
+	foreign key (ID_Socio) references Socios,
+	primary key (ID_Pago)
+);
+
+create table Det_Pago(
+	ID_Pago varchar,
+	CNS varchar,
+	Fecha date,
+	Concepto varchar,
+	foreign key (ID_Pago) references Pago,
+	primary key (ID_Pago, CNS)
+);
+
+create table Empleado(
+	ID_Empleado varchar,
+	Nombre varchar,
+	Apellido varchar,
+	Genero varchar,
+	Edad varchar,
+	Ocupacion varchar,
+	Telefono varchar,
+	RFC varchar,
+	Direccion varchar,
+	primary key (ID_Empleado) 
+);
+
+create table Rutina(
+	ID_Rutina varchar,
+	ID_Empleado varchar,
+	Nom varchar,
+	Dias varchar,
+	Horarios varchar,
+	foreign key (ID_Empleado) references Empleado,	
+	primary key (ID_Rutina)
+);
+
+create table RegistroRutina(
+	ID_Rutina varchar,
+	ID_Socio varchar,
+	foreign key (ID_Rutina) references Rutina,
+	foreign key (ID_Socio) references Socios,
+	primary key (ID_Rutina, ID_Socio)
+);
+
+create table Admin(
+	Usuario varchar,
+	Contrasena varchar,
+	primary key (Usuario)
+);
+
+create table Inventario(
+	ID_Articulo varchar,
+	Articulo varchar,
+	Cantidad varchar,
+	FechaIngreso date,
+	primary key (ID_Articulo)
+);
+
+SELECT Nombre FROM socios WHERE ID_Socio = '3' GROUP BY Nombre;
+SELECT Id_Socio, Nombre FROM socios WHERE ID_Socio = '3' GROUP BY Id_Socio, Nombre;
+
+
+SELECT r.Id_Rutina,a.nombre,r.Id_Socio, s.Nombre, s.Apellido 
+FROM socios s, registrorutina r, rutina a
+WHERE r.ID_Socio = s.ID_socio AND r.Id_rutina = a.Id_rutina
+GROUP BY r.Id_Rutina,a.nombre,r.Id_Socio, s.Nombre, s.Apellido;
+
+SELECT r.Id_Rutina,a.nombre,r.Id_Socio, s.Nombre, s.Apellido FROM socios s, registrorutina r, rutina a WHERE r.ID_Socio = s.ID_socio AND r.Id_rutina = a.Id_rutina GROUP BY r.Id_Rutina,a.nombre,r.Id_Socio, s.Nombre, s.Apellido;
